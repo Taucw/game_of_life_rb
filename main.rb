@@ -5,7 +5,7 @@ require 'bundler/setup'
 
 
 board = Board.new
-[
- [DeadCell, LiveCell, LiveCell, DeadCell],
- # ...
-]
+# [
+#  [DeadCell, LiveCell, LiveCell, DeadCell],
+#  # ...
+# ]
