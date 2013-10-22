@@ -1,28 +1,33 @@
 class Board
 
+  alias_method :bottom_values, :top_values
+
+
   def initialize(grid)
     @grid = grid
   end
 
   def neighbors(x, y)
     [
-      top_values(y-1, x),
-      arround_values(y, x),
-      bottom_values(y+1, x)
+      top_values(x, y-1),
+      around_values(x, y),
+      bottom_values(x, y+1)
     ].flatten.compact
   end
-  def top_values y, x
-    (x-1..x+1).map { |_x| wrapper(y, _x) { @grid[y].slice(_x) } }
+
+  def top_values x, y
+    (x-1..x+1).map { |_x| fetch(_x, y) }
   end
-  alias_method :bottom_values, :top_values
-  def arround_values y, x
-    [wrapper(y, x-1) { @grid[y].slice(x-1) }, wrapper(y, x+1) { @grid[y].slice(x+1) }]
+
+  def around_values x, y
+    [fetch(x-1, y), fetch(x+1, y)]
   end
-  def wrapper y, x, &block
-    return nil if out?(y, x)
-    yield
+
+  def fetch x, y
+    out?(x, y) ? nil : @grid[y].slice(x)
   end
-  def out?(y, x) (x > xmax or x < min) or (y > ymax or y < min) end
+
+  def out?(x, y) (x > xmax or x < min) or (y > ymax or y < min) end
   def xmax() @grid[0].size end
   def ymax() @grid.size end
   def min() 0 end
